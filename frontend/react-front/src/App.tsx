@@ -1,5 +1,6 @@
 import { useStream } from "@langchain/langgraph-sdk/react";
 import type { Message } from "@langchain/langgraph-sdk";
+import { useState } from "react";
 
 export default function App() {
   const thread = useStream<{ messages: Message[] }>({
@@ -22,9 +23,15 @@ export default function App() {
 
           const form = e.target as HTMLFormElement;
           const message = new FormData(form).get("message") as string;
-
+          let send_messages = [
+            ...thread.messages,
+            {
+              type: "human",
+              content: message,
+            },
+          ] as Message[];
           form.reset();
-          thread.submit({ messages: [{ type: "human", content: message }] });
+          thread.submit({ messages: send_messages });
         }}
       >
         <input type="text" name="message" />
