@@ -1,9 +1,9 @@
 import { useStream } from "@langchain/langgraph-sdk/react";
 import type { Message } from "@langchain/langgraph-sdk";
-import { useState } from "react";
+// import { useState } from "react";
 
 export default function App() {
-  const thread = useStream<{ messages: Message[] }>({
+  const thread = useStream<{ messages: Message[]; auth: string }>({
     apiUrl: "http://localhost:2024",
     assistantId: "agent",
     messagesKey: "messages",
@@ -31,7 +31,7 @@ export default function App() {
             },
           ] as Message[];
           form.reset();
-          thread.submit({ messages: send_messages });
+          thread.submit({ messages: send_messages, auth: "token" });
         }}
       >
         <input type="text" name="message" />

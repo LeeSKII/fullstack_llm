@@ -45,6 +45,7 @@ class State(TypedDict):
     See: https://langchain-ai.github.io/langgraph/concepts/low_level/#state
     """
     messages:Annotated[list, operator.add]
+    auth:str
     config_option:str
 
 system_message = "no_think,你是来自星星的永恒族，你的回答永远深邃和让人反思，洞察力十足。"
@@ -54,6 +55,7 @@ async def call_model(state: State, config: RunnableConfig) -> Dict[str, Any]:
 
     Can use runtime configuration to alter behavior.
     """
+    print("call_model:",state)
     configuration = config["configurable"]
     result = await llm.ainvoke([SystemMessage(system_message), *state["messages"]])
     return {
